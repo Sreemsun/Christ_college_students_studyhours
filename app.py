@@ -3,8 +3,7 @@ import pandas as pd
 import joblib
 from pathlib import Path
 
-model_path = Path(__file__).parent / "Student_pass_fail_model.pkl"
-model = joblib.load(model_path)
+model = joblib.load("Student_pass_fail_model.pkl")
 
 st.title("Student Pass Predictor")
 st.write("Enter the number of hours studied to predict the result.")
