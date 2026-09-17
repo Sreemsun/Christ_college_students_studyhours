@@ -30,4 +30,4 @@ if st.button("Predict Price", type="primary"):
     })
     
     prediction = model.predict(input_data)[0]
-    st.success(f"### Estimated Price: {prediction} Lakhs")
+    st.success(f"### Estimated Price: {prediction:.2f} Lakhs")
