@@ -9,21 +9,25 @@ model = joblib.load("Student_pass_fail_model.pkl")
 
 def predict_result(study_hours):
 
-    input_data = pd.DataFrame({
-        "Study_Hours": [study_hours]
-    })
+    try:
+        input_data = pd.DataFrame({
+            "Study_Hours": [study_hours]
+        })
 
-    prediction = model.predict(input_data)[0]
-    probability = model.predict_proba(input_data)[0]
+        prediction = model.predict(input_data)[0]
+        probability = model.predict_proba(input_data)[0]
 
-    if prediction == 1:
-        result = "PASS"
-        confidence = probability[1] * 100
-    else:
-        result = "FAIL"
-        confidence = probability[0] * 100
+        if prediction == 1:
+            result = "PASS"
+            confidence = probability[1] * 100
+        else:
+            result = "FAIL"
+            confidence = probability[0] * 100
 
-    return f"Student Result: {result}\nProbability: {confidence:.2f}%"
+        return f"Student Result: {result}\nProbability: {confidence:.2f}%"
+
+    except Exception as e:
+        return f"ERROR: {type(e).__name__}: {str(e)}"
 
 
 demo = gr.Interface(
