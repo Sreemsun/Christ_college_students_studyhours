@@ -10,7 +10,6 @@ st.title("AC Price Predictor")
 st.write("Enter the AC units and electric bill to predict the price.")
 
 AC_Units = st.number_input("SAC_Units", min_value=0.0, step=0.5)
-Electric_bill = st.number_input("Electric_bill", min_value=0.0, max_value=100.0, value=75.0, step=1.0)
 
 if st.button("Predict"):
 	input_data = pd.DataFrame({
