@@ -7,7 +7,7 @@ import os
 model = joblib.load("Student_pass_fail_model.pkl")
 
 
-def predict_result(study_hours):
+def predict_result(Study_hours):
 
     input_data = pd.DataFrame({
         "Study hours": [Study_hours]
