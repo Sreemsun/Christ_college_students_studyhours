@@ -13,8 +13,7 @@ AC_Units = st.number_input("SAC_Units", min_value=0.0, step=0.5)
 
 if st.button("Predict"):
 	input_data = pd.DataFrame({
-		"AC Units": [AC_Units],
-		"Electric bill": [Electric_bill]
+		"AC Units": [AC_Units]
 	})
 	prediction = model.predict(input_data)[0]
 	probability = model.predict_proba(input_data)[0][int(prediction)]
