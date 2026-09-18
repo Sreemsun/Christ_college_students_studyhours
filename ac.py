@@ -3,15 +3,12 @@ import pandas as pd
 import joblib
 from pathlib import Path
 
-# Load the model
+# Load model
 model_path = Path(__file__).parent / "AC_Price.pkl"
 model = joblib.load(model_path)
 
 st.title("Electric Bill Predictor")
-st.write(
-    "Enter the number of AC and Fan units to predict "
-    "the estimated electric bill."
-)
+st.write("Enter the number of AC and Fan units to predict the estimated electric bill.")
 
 ac_units = st.number_input(
     "AC Units",
@@ -38,6 +35,4 @@ if st.button("Predict"):
 
     prediction = model.predict(input_data)[0]
 
-    st.success(
-        f"Predicted Electric Bill: ₹{float(prediction):.2f}"
-    )
+    st.success(f"Predicted Electric Bill: ₹{float(prediction):.2f}")
