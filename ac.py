@@ -3,23 +3,23 @@ import pandas as pd
 import joblib
 from pathlib import Path
 
+# Load the AC price/bill model
 model_path = Path(__file__).parent / "AC_Price.pkl"
 model = joblib.load(model_path)
 
-st.title("Electric Bill Predictor")
-st.write("Enter the AC units to predict the electric bill.")
+st.title("AC Price Predictor")
+st.write("Enter the AC units and electric bill details below to predict the estimated outcome.")
 
-AC_Units = st.number_input(
-    "AC Units",
-    min_value=0.0,
-    step=5.0
-)
+ac_units = st.number_input("AC Units", min_value=0.0, max_value=50.0, value=1.0, step=1.0)
+electric_bill = st.number_input("Electric Bill (₹)", min_value=0.0, max_value=100000.0, value=500.0, step=50.0)
 
 if st.button("Predict"):
-    input_data = pd.DataFrame({
-        "AC_Units": [AC_Units]
-    })
+    n_features = getattr(model, "n_features_in_", 1)
+    if n_features == 3:
+        input_data = pd.DataFrame([[0, ac_units, electric_bill]])
+    else:
+        input_data = pd.DataFrame({"AC_Units": [ac_units]})
 
     prediction = model.predict(input_data)[0]
+    st.success(f"Predicted Price / Bill: ₹{prediction:.2f}")
 
-    st.success(f"Predicted Electric Bill: ₹{prediction:.2f}")
