@@ -4,13 +4,13 @@ import pandas as pd
 import os
 
 # Load model
-model = joblib.load("Student_Std_Hrs.pkl")
+model = joblib.load("Student_pass_fail_model.pkl")
 
 
 def predict_result(study_hours):
 
     input_data = pd.DataFrame({
-        "Study hours": [study_hours]
+        "Study hours": [Study_hours]
     })
 
     prediction = model.predict(input_data)[0]
