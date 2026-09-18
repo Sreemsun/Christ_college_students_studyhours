@@ -4,30 +4,26 @@ import pandas as pd
 import os
 
 # Load model
-model = joblib.load("Student_pass_fail_model.pkl")
+model = joblib.load("Student_Std_Hrs.pkl")
 
 
 def predict_result(study_hours):
 
-    try:
-        input_data = pd.DataFrame({
-            "Study_Hours": [study_hours]
-        })
+    input_data = pd.DataFrame({
+        "Study hours": [study_hours]
+    })
 
-        prediction = model.predict(input_data)[0]
-        probability = model.predict_proba(input_data)[0]
+    prediction = model.predict(input_data)[0]
+    probability = model.predict_proba(input_data)[0]
 
-        if prediction == 1:
-            result = "PASS"
-            confidence = probability[1] * 100
-        else:
-            result = "FAIL"
-            confidence = probability[0] * 100
+    if prediction == 1:
+        result = "PASS"
+        confidence = probability[1] * 100
+    else:
+        result = "FAIL"
+        confidence = probability[0] * 100
 
-        return f"Student Result: {result}\nProbability: {confidence:.2f}%"
-
-    except Exception as e:
-        return f"ERROR: {type(e).__name__}: {str(e)}"
+    return f"Student Result: {result}\nProbability: {confidence:.2f}%"
 
 
 demo = gr.Interface(
@@ -47,5 +43,5 @@ demo = gr.Interface(
 if __name__ == "__main__":
     demo.launch(
         server_name="0.0.0.0",
-        server_port=int(os.environ.get("PORT", 7860))
+        server_port=int(os.environ.get("PORT", 10000))
     )
