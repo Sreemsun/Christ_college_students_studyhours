@@ -6,16 +6,20 @@ from pathlib import Path
 model_path = Path(__file__).parent / "AC_Price.pkl"
 model = joblib.load(model_path)
 
-st.title("AC Price Predictor")
-st.write("Enter the AC units and electric bill to predict the price.")
+st.title("Electric Bill Predictor")
+st.write("Enter the AC units to predict the electric bill.")
 
-AC_Units = st.number_input("SAC_Units", min_value=0.0, step=0.5)
+AC_Units = st.number_input(
+    "AC Units",
+    min_value=0.0,
+    step=5.0
+)
 
 if st.button("Predict"):
-	input_data = pd.DataFrame({
-		"AC Units": [AC_Units]
-	})
-	prediction = model.predict(input_data)[0]
-	probability = model.predict_proba(input_data)[0][int(prediction)]
+    input_data = pd.DataFrame({
+        "AC_Units": [AC_Units]
+    })
 
-	st.success(f"Predicted Electric Bill: ₹{prediction:.2f}")
+    prediction = model.predict(input_data)[0]
+
+    st.success(f"Predicted Electric Bill: ₹{prediction:.2f}")
