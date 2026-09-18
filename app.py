@@ -1,26 +1,47 @@
-import streamlit as st
-import pandas as pd
+mport gradio as gr
 import joblib
-from pathlib import Path
+import pandas as pd
+import os
 
-model_path = Path(__file__).parent / "Student_pass_fail_model_modify.pkl"
-model = joblib.load(model_path)
+# Load model
+model = joblib.load("Student_pass_fail_model_modify.pkl")
 
-st.title("Student Pass Predictor")
-st.write("Enter the study hours and attendance percentage to predict the result.")
 
-study_hours = st.number_input("Study hours", min_value=0.0, step=0.5)
-attendance = st.number_input("Attendance (%)", min_value=0.0, max_value=100.0, value=75.0, step=1.0)
+def predict_result(study_hours):
 
-if st.button("Predict"):
-	input_data = pd.DataFrame({
-		"Study hours": [study_hours],
-		"Attendance": [attendance]
-	})
-	prediction = model.predict(input_data)[0]
-	probability = model.predict_proba(input_data)[0][int(prediction)]
+    input_data = pd.DataFrame({
+        "Study_Hours": [study_hours]
+    })
 
-	if prediction == 1:
-		st.success(f"Predicted result: Pass ({probability:.1%} confidence)")
-	else:
-		st.error(f"Predicted result: Fail ({probability:.1%} confidence)")
+    prediction = model.predict(input_data)[0]
+    probability = model.predict_proba(input_data)[0]
+
+    if prediction == 1:
+        result = "PASS"
+        confidence = probability[1] * 100
+    else:
+        result = "FAIL"
+        confidence = probability[0] * 100
+
+    return f"Student Result: {result}\nProbability: {confidence:.2f}%"
+
+
+demo = gr.Interface(
+    fn=predict_result,
+    inputs=gr.Number(
+        label="Enter Study Hours",
+        minimum=0,
+        maximum=24,
+        value=5
+    ),
+    outputs=gr.Textbox(label="Prediction"),
+    title="Student Result Prediction",
+    description="Predict Pass or Fail based on Study Hours."
+)
+
+
+if __name__ == "__main__":
+    demo.launch(
+        server_name="0.0.0.0",
+        server_port=int(os.environ.get("PORT", 7860))
+    )
